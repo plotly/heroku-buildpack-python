@@ -2,13 +2,24 @@
 shopt -s extglob
 shopt -s nullglob
 
+
 # This is necessary since this script is sometimes sourced from
 # subshells that don't have the variables from bin/compile.
 # Remove this once we no longer wrap all the things in `sub_env`.
 BIN_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 ROOT_DIR=$(dirname "${BIN_DIR}")
 # shellcheck source=vendor/buildpack-stdlib_v8.sh
-source "${ROOT_DIR}/vendor/buildpack-stdlib_v8.sh"
+STDLIB_SOURCE="${ROOT_DIR}/vendor/buildpack-stdlib_v8.sh"
+
+# stdlib is vendored by the buildpack but the user can provide
+# BUILDPACK_COMMON_URL to specify a custom target for stdlib.
+# Note: this is designed for non-Heroku use, as it does not use the user-provided
+# environment variable mechanism (the ENV_DIR).
+if [[ -n ${BUILDPACK_COMMON_URL:-} ]]; then
+    curl --retry 3 -s "${BUILDPACK_COMMON_URL}/buildpack-stdlib/v8/stdlib.sh" > /tmp/stdlib.sh
+    STDLIB_SOURCE="/tmp/stdlib.sh"
+fi
+source "$STDLIB_SOURCE"
 
 if [ "$(uname)" == Darwin ]; then
     sed() { command sed -l "$@"; }
