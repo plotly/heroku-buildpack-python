@@ -2,6 +2,7 @@
 shopt -s extglob
 shopt -s nullglob
 
+<<<<<<< HEAD
 
 # This is necessary since this script is sometimes sourced from
 # subshells that don't have the variables from bin/compile.
