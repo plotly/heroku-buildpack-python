@@ -47,48 +47,17 @@ test framework.
 
 To create a release:
 
-- Create a tag, of the form `3.1.0b1`, where `3.1.0` is the On-Prem release
-we're currently working on and `b1` is a build ID that's incremented for
-each build.
+- Rebase the last three commits onto `heroku/heroku-buildpack-python`
     ```shell
-    git tag 3.1.0b1
+    git remote rm heroku || true
+    git remote add heroku https://github.com/plotly/heroku-buildpack-python
+    git rebase heroku/master master
+    git push -f origin master
+    ```
+- Create a tag. This tag should correspond with the current herokuish release to indicate what release we're building on top of.
+    ```shell
+    # if latest gliderlabs/herokuish is 0.4.5
+    git tag 0.4.5-1
     git push --tags
     ```
-- Update
-[`plotly/herokuish`](https://github.com/plotly/herokuish/blob/master/Dockerfile)
-to use the new version,
-[create a new Herokuish release](https://github.com/plotly/herokuish#releasing),
-and test with DDS.
-- If needed, fix things on your branch and iterate by creating a new tag and
-a new Herokuish release.
-- Create a PR against the appropriate branch (maintenance releases should be made
-against the release branch), get it approved, and merge.
-
-## Upstream Rebase
-
-After each major release of Dash Enterprise, our buildpack fork should be
-rebased onto `heroku/heroku-buildpack-python` as needed. This should happen
-as soon as possible after a major release to allow for enough time to test
-and resolve any issues before the start of another freeze cycle. These
-rebases could potentially introduce a substantial amount of changes,
-which are likely too risky to introduce during a feature freeze.
-
-Steps for rebase:
-
-    # add a fresh heroku remote
-    git remote rm heroku || true
-    git remote add heroku https://github.com/heroku/heroku-buildpack-python
-
-    # fetch heroku changes
-    git fetch heroku
-    git checkout origin/master
-    git branch -D rebase-on-upstream || true
-    git checkout -b rebase-on-upstream
-
-    # rebase our commits onto `heroku/heroku-buildpack-python`
-    # resolve any conflicts as necessary
-    # update vendored get-pip.py as necessary
-    git rebase heroku/master
-    git push origin rebase-on-upstream
-
-Once the rebase is complete, simply run through the release process as detailed above.
+- CI will build a release and push to quay.io
