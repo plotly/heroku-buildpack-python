@@ -92,3 +92,17 @@ Steps for rebase:
     git push origin rebase-on-upstream
 
 Once the rebase is complete, simply run through the release process as detailed above.
+- Rebase the last three commits onto `heroku/heroku-buildpack-python`
+    ```shell
+    git remote rm heroku || true
+    git remote add heroku https://github.com/plotly/heroku-buildpack-python
+    git rebase heroku/master master
+    git push -f origin master
+    ```
+- Create a tag. This tag should correspond with the current herokuish release to indicate what release we're building on top of.
+    ```shell
+    # if latest gliderlabs/herokuish is 0.4.5
+    git tag 0.4.5-1
+    git push --tags
+    ```
+- CI will build a release and push to quay.io
