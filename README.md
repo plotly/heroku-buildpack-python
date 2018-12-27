@@ -86,3 +86,22 @@ make test-heroku-16
 The tests are run via the vendored
 [shunit2](https://github.com/kward/shunit2)
 test framework.
+
+## Releasing
+
+To create a release:
+
+- Rebase the last three commits onto `heroku/heroku-buildpack-python`
+    ```shell
+    git remote rm heroku || true
+    git remote add heroku https://github.com/plotly/heroku-buildpack-python
+    git rebase heroku/master master
+    git push -f origin master
+    ```
+- Create a tag. This tag should correspond with the current herokuish release to indicate what release we're building on top of.
+    ```shell
+    # if latest gliderlabs/herokuish is 0.4.5
+    git tag 0.4.5-1
+    git push --tags
+    ```
+- CI will build a release and push to quay.io
