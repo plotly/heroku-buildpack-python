@@ -106,3 +106,5 @@ Once the rebase is complete, simply run through the release process as detailed 
     git push --tags
     ```
 - CI will build a release and push to quay.io
+
+Note that the base Herokuish version is set in `.circleci/config.yml`.
