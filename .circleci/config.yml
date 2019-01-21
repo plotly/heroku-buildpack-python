@@ -11,8 +11,8 @@ jobs:
       - run:
           name: build docker image
           command: |
-            docker pull gliderlabs/herokuish:latest
-            docker run --name plotly-herokuish gliderlabs/herokuish:latest /bin/herokuish buildpack install https://github.com/plotly/heroku-buildpack-python $CIRCLE_SHA1 04_buildpack-python
+            docker pull gliderlabs/herokuish:v0.4.5
+            docker run --name plotly-herokuish gliderlabs/herokuish:v0.4.5 /bin/herokuish buildpack install https://github.com/plotly/heroku-buildpack-python $CIRCLE_SHA1 04_buildpack-python
             ID=$(docker inspect plotly-herokuish --format '{{ .ID }}' )
             docker commit $ID quay.io/plotly/herokuish:${CIRCLE_TAG}
       - run:
