@@ -61,3 +61,5 @@ To create a release:
     git push --tags
     ```
 - CI will build a release and push to quay.io
+
+Note that the base Herokuish version is set in `.circleci/config.yml`.
