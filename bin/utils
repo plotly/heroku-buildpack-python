@@ -19,7 +19,12 @@ if [[ -n ${BUILDPACK_COMMON_URL:-} ]]; then
     curl --retry 3 --verbose "${BUILDPACK_COMMON_URL}/buildpack-stdlib/v8/stdlib.sh" > /tmp/stdlib.sh
     STDLIB_SOURCE="/tmp/stdlib.sh"
 fi
-source "$STDLIB_SOURCE"
+# shellcheck source=/dev/null
+if ! source "$STDLIB_SOURCE" ; then
+    echo Running /tmp/stdlib.sh failed.
+    head -20 /tmp/stdlib.sh
+    exit 2
+fi
 
 if [ "$(uname)" == Darwin ]; then
     sed() { command sed -l "$@"; }
