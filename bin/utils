@@ -17,7 +17,11 @@ if [[ ! -f  /tmp/stdlib.sh ]]; then
   curl --retry 3 --verbose "${COMMON_VENDOR_URL}/buildpack-stdlib/v8/stdlib.sh" > /tmp/stdlib.sh
 fi
 # shellcheck source=/dev/null
-source /tmp/stdlib.sh
+if ! source /tmp/stdlib.sh ; then
+    echo Running /tmp/stdlib.sh failed.
+    head -20 /tmp/stdlib.sh
+    exit 2
+fi
 
 if [ "$(uname)" == Darwin ]; then
     sed() { command sed -l "$@"; }
