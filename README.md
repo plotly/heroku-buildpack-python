@@ -95,16 +95,25 @@ Once the rebase is complete, simply run through the release process as detailed 
 - Rebase the last three commits onto `heroku/heroku-buildpack-python`
     ```shell
     git remote rm heroku || true
-    git remote add heroku https://github.com/plotly/heroku-buildpack-python
-    git rebase heroku/master master
-    git push -f origin master
+    git remote add heroku https://github.com/heroku/heroku-buildpack-python
+    git fetch heroku
+    git checkout origin/master
+    git branch rebase-on-upstream
+    git rebase heroku/master
+    git push origin rebase-on-upstream
     ```
-- Create a tag. This tag should correspond with the current herokuish release to indicate what release we're building on top of.
+- Create a tag, of the form `3.1.0b1`, where `3.1.0` is the On-Prem release
+we're currently working on and `b1` is a build ID that's incremented for
+each build.
     ```shell
-    # if latest gliderlabs/herokuish is 0.4.5
-    git tag 0.4.5-1
+    git tag 3.1.0b1
     git push --tags
     ```
-- CI will build a release and push to quay.io
-
-Note that the base Herokuish version is set in `.circleci/config.yml`.
+- Update
+[`herokuish.json`](https://github.com/plotly/herokuish/blob/master/herokuish.json)
+to use the new version,
+[create a new Herokuish release](https://github.com/plotly/herokuish#releasing),
+and test with DDS.
+- If needed, fix things on your branch and iterate by creating a new tag and
+a new Herokuish release.
+- Create a PR, get it approved, and merge.
