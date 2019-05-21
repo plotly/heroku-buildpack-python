@@ -16,7 +16,7 @@ STDLIB_SOURCE="${ROOT_DIR}/vendor/buildpack-stdlib_v8.sh"
 # Note: this is designed for non-Heroku use, as it does not use the user-provided
 # environment variable mechanism (the ENV_DIR).
 if [[ -n ${BUILDPACK_COMMON_URL:-} ]]; then
-    curl --retry 3 -s "${BUILDPACK_COMMON_URL}/buildpack-stdlib/v8/stdlib.sh" > /tmp/stdlib.sh
+    curl --retry 3 --verbose "${BUILDPACK_COMMON_URL}/buildpack-stdlib/v8/stdlib.sh" > /tmp/stdlib.sh
     STDLIB_SOURCE="/tmp/stdlib.sh"
 fi
 source "$STDLIB_SOURCE"
