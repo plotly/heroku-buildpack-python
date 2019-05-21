@@ -34,9 +34,9 @@ elif [[ "$BUILD_WITH_GEO_LIBRARIES" ]]; then
     echo "-----> Bootstrapping gdal, geos, proj."
     mkdir -p .heroku/vendor
     # Download and extract cryptography into target vendor directory.
-    curl "$VENDORED_GDAL" -s | tar zxv -C .heroku/vendor &> /dev/null
-    curl "$VENDORED_GEOS" -s | tar zxv -C .heroku/vendor &> /dev/null
-    curl "$VENDORED_PROJ" -s | tar zxv -C .heroku/vendor &> /dev/null
+    curl "$VENDORED_GDAL" --verbose | tar zxv -C .heroku/vendor &> /dev/null
+    curl "$VENDORED_GEOS" --verbose | tar zxv -C .heroku/vendor &> /dev/null
+    curl "$VENDORED_PROJ" --verbose | tar zxv -C .heroku/vendor &> /dev/null
 
     mcount "steps.vendor.geo_libs"
     # Copy libjasper from build image to slug.
