@@ -18,13 +18,26 @@ STDLIB_SOURCE="${ROOT_DIR}/vendor/buildpack-stdlib_v8.sh"
 if [[ -n ${BUILDPACK_COMMON_URL:-} ]]; then
     curl --retry 3 --verbose "${BUILDPACK_COMMON_URL}/buildpack-stdlib/v8/stdlib.sh" > /tmp/stdlib.sh
     STDLIB_SOURCE="/tmp/stdlib.sh"
+    COMMON_VENDOR_URL="$BUILDPACK_COMMON_URL"
+fi
+export COMMON_VENDOR_URL
+
+# The standard library.
+if [[ ! -f  "STDLIB_SOURCE" ]]; then
+  TMP_CURL_OUTPUT=$(mktemp)
+  curl --retry 3 --verbose "${COMMON_VENDOR_URL}/buildpack-stdlib/v8/stdlib.sh" > /tmp/stdlib.sh 2>"$TMP_CURL_OUTPUT" || {
+    cat "$TMP_CURL_OUTPUT"
+  }
 fi
 # shellcheck source=/dev/null
 if ! source "$STDLIB_SOURCE" ; then
-    echo Running /tmp/stdlib.sh failed.
-    head -20 /tmp/stdlib.sh
-    exit 2
+    echo Running "$STDLIB_SOURCE" failed.
+    head -20 "$STDLIB_SOURCE"
+    echo Download output was:
+    cat $TMP_CURL_OUTPUT
+    exit 1
 fi
+rm -f $TMP_CURL_OUTPUT
 
 if [ "$(uname)" == Darwin ]; then
     sed() { command sed -l "$@"; }
