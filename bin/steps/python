@@ -14,8 +14,10 @@ ONLY_SUPPORTED_2_VERSION="Only the latest version of Python 2 is supported on th
 
 PYTHON_2_EOL_UPDATE="Python 2 has reached it's community EOL. Upgrade your Python runtime to maintain a secure application as soon as possible."
 
+TMP_CURL_OUTPUT=$(mktemp)
+
 # check if runtime exists
-if curl --output /dev/null --verbose --head --fail "$VENDORED_PYTHON"; then
+if curl --output /dev/null --verbose --head --fail "$VENDORED_PYTHON" 2>"$TMP_CURL_OUTPUT"; then
   if [[ "$PYTHON_VERSION" == $PY39* ]]; then
     if [ "$PYTHON_VERSION" != "$LATEST_39" ]; then
       puts-warn "$SECURITY_UPDATE" "$LATEST_39"
@@ -81,6 +83,7 @@ if curl --output /dev/null --verbose --head --fail "$VENDORED_PYTHON"; then
     fi
   fi
 else
+  cat "$TMP_CURL_OUTPUT"
   puts-warn "Requested runtime ($PYTHON_VERSION) is not available for this stack ($STACK)."
   puts-warn "Aborting.  More info: https://devcenter.heroku.com/articles/python-support"
   exit 1
@@ -127,7 +130,8 @@ if [ ! "$SKIP_INSTALL" ]; then
     # Prepare destination directory.
     mkdir -p .heroku/python
 
-    if ! curl "${VENDORED_PYTHON}" --verbose | tar zxv -C .heroku/python &> /dev/null; then
+    if ! curl "${VENDORED_PYTHON}" --verbose 2>>"$TMP_CURL_OUTPUT" | tar zxv -C .heroku/python &> /dev/null; then
+      cat "$TMP_CURL_OUTPUT"
       puts-warn "Requested runtime ($PYTHON_VERSION) is not available for this stack ($STACK)."
       puts-warn "Aborting.  More info: https://devcenter.heroku.com/articles/python-support"
       exit 1
@@ -158,22 +162,12 @@ elif [[ "${PYTHON_VERSION}" == ${PY27}* || "${PYTHON_VERSION}" == ${PYPY27}* ]];
   SETUPTOOLS_VERSION='44.1.1'
 fi
 
-# We don't use get-pip.py, since:
-#  - it uses `--force-reinstall`, which is unnecessary here and slows down repeat builds
-#  - it means downloading pip twice (once embedded in get-pip.py, and again during
-#    the install, since get-pip.py can't install the embedded version directly)
-#  - we would still have to manage several versions of get-pip.py, to support older Pythons.
-# Instead, we use the pip wheel to install itself, using the method described here:
-# https://github.com/pypa/pip/issues/2351#issuecomment-69994524
-PIP_WHEEL_FILENAME="pip-${PIP_VERSION}-py2.py3-none-any.whl"
-PIP_WHEEL_URL="${S3_BASE_URL}/common/${PIP_WHEEL_FILENAME}"
-PIP_WHEEL="${TMPDIR:-/tmp}/${PIP_WHEEL_FILENAME}"
+rm -f "$TMP_CURL_OUTPUT"
 
-if ! curl -sSf "${PIP_WHEEL_URL}" -o "$PIP_WHEEL"; then
-  mcount "failure.python.download-pip"
-  puts-warn "Failed to download pip"
-  exit 1
-fi
+# If Pip isn't up to date:
+if [ "$FRESH_PYTHON" ] || [[ ! $(pip --version) == *$PIP_UPDATE* ]]; then
+
+  puts-step "Installing pip"
 
 if [[ -f "$BUILD_DIR/Pipfile" ]]; then
   # The buildpack is pinned to old pipenv, which requires older pip.
