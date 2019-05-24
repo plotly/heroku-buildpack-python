@@ -14,9 +14,9 @@ export COMMON_VENDOR_URL
 
 # The standard library.
 if [[ ! -f  /tmp/stdlib.sh ]]; then
-  TMP_COMMAND_OUTPUT=$(mktemp)
-  curl --retry 3 --verbose "${COMMON_VENDOR_URL}/buildpack-stdlib/v8/stdlib.sh" > /tmp/stdlib.sh 2>"$TMP_COMMAND_OUTPUT" || {
-    cat "$TMP_COMMAND_OUTPUT"
+  TMP_CURL_OUTPUT=$(mktemp)
+  curl --retry 3 --verbose "${COMMON_VENDOR_URL}/buildpack-stdlib/v8/stdlib.sh" > /tmp/stdlib.sh 2>"$TMP_CURL_OUTPUT" || {
+    cat "$TMP_CURL_OUTPUT"
   }
 fi
 # shellcheck source=/dev/null
@@ -24,10 +24,10 @@ if ! source /tmp/stdlib.sh ; then
     echo Running /tmp/stdlib.sh failed.
     head -20 /tmp/stdlib.sh
     echo Download output was:
-    cat $TMP_COMMAND_OUTPUT
+    cat $TMP_CURL_OUTPUT
     exit 2
 fi
-rm -f $TMP_COMMAND_OUTPUT
+rm -f $TMP_CURL_OUTPUT
 
 if [ "$(uname)" == Darwin ]; then
     sed() { command sed -l "$@"; }
