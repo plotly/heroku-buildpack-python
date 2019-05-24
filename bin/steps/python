@@ -5,7 +5,7 @@ runtime-fixer runtime.txt
 PYTHON_VERSION=$(cat runtime.txt)
 
 # The location of the pre-compiled python binary.
-VENDORED_PYTHON="${VENDOR_URL}/runtimes/$PYTHON_VERSION.tar.gzz"
+VENDORED_PYTHON="${VENDOR_URL}/runtimes/$PYTHON_VERSION.tar.gz"
 
 SECURITY_UPDATE="Python has released a security update! Please consider upgrading to"
 
@@ -77,6 +77,7 @@ if [ -f .heroku/python-version ]; then
   fi
 fi
 
+VENDORED_PYTHON="${VENDOR_URL}/runtimes/$PYTHON_VERSION.tar.gzz"
 
 if [ ! "$SKIP_INSTALL" ]; then
     puts-step "Installing $PYTHON_VERSION"
