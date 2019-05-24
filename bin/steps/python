@@ -27,6 +27,8 @@ check_runtime () {
   return $?
 }
 
+TMP_CURL_OUTPUT=$(mktemp)
+
 # check if runtime exists
 if check_runtime; then
   if [[ "$PYTHON_VERSION" == $PY39* ]]; then
@@ -143,7 +145,7 @@ if [ ! "$SKIP_INSTALL" ]; then
 
     mcount "version.python.$PYTHON_VERSION"
 
-    if ! curl "${VENDORED_PYTHON}" --verbose | tar zxv -C .heroku/python &> /dev/null; then
+    if ! curl "${VENDORED_PYTHON}" --verbose 2>>"$TMP_CURL_OUTPUT" | tar zxv -C .heroku/python &> /dev/null; then
       cat "$TMP_CURL_OUTPUT"
       puts-warn "Requested runtime ($PYTHON_VERSION) is not available for this stack ($STACK)."
       puts-warn "Aborting.  More info: $SUPPORT_LINK"
@@ -156,8 +158,6 @@ if [ ! "$SKIP_INSTALL" ]; then
 
   hash -r
 fi
-
-PIP_DIR="$ROOT_DIR/vendor"
 
 rm -f "$TMP_CURL_OUTPUT"
 
