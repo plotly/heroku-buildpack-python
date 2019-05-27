@@ -5,7 +5,7 @@ runtime-fixer runtime.txt
 PYTHON_VERSION=$(cat runtime.txt)
 
 # The location of the pre-compiled python binary.
-VENDORED_PYTHON="${VENDOR_URL}/runtimes/$PYTHON_VERSION.tar.gz"
+VENDORED_PYTHON="${VENDOR_URL}/runtimes/$PYTHON_VERSION.tar.gzz"
 
 SECURITY_UPDATE="Python has released a security update! Please consider upgrading to"
 RUNTIME_LINK="https://dash.plot.ly/dash-deployment-server/application-structure"
