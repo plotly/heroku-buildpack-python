@@ -10,6 +10,7 @@ VENDORED_PYTHON="${VENDOR_URL}/${STACK}/runtimes/${PYTHON_VERSION}.tar.gz"
 SECURITY_UPDATE="Python has released a security update! Please consider upgrading to"
 RUNTIME_LINK="https://dash.plot.ly/dash-deployment-server/application-structure"
 SUPPORT_LINK="https://dash.plot.ly/dash-deployment-server/troubleshooting"
+<<<<<<< HEAD
 
 ONLY_SUPPORTED_2_VERSION="Only the latest version of Python 2 is supported on the platform. Please consider upgrading to"
 
@@ -26,6 +27,8 @@ check_runtime () {
   fi
   return $?
 }
+=======
+>>>>>>> 3d574b6... Link to Plotly pages instead of Heroku
 
 TMP_CURL_OUTPUT=$(mktemp)
 
