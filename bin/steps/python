@@ -8,6 +8,8 @@ PYTHON_VERSION=$(cat runtime.txt)
 VENDORED_PYTHON="${VENDOR_URL}/runtimes/$PYTHON_VERSION.tar.gz"
 
 SECURITY_UPDATE="Python has released a security update! Please consider upgrading to"
+RUNTIME_LINK="https://dash.plot.ly/dash-deployment-server/application-structure"
+SUPPORT_LINK="https://dash.plot.ly/dash-deployment-server/troubleshooting"
 
 TMP_CURL_OUTPUT=$(mktemp)
 
@@ -17,41 +19,41 @@ if curl --output /dev/null --verbose --head --fail "$VENDORED_PYTHON" 2>"$TMP_CU
     # do things to alert the user of security release available
     if [ "$PYTHON_VERSION" != "$LATEST_37" ]; then
       puts-warn "$SECURITY_UPDATE" "$LATEST_37"
-      echo "       Learn More: https://devcenter.heroku.com/articles/python-runtimes"
+      echo "       Learn More: $RUNTIME_LINK"
     fi
   fi
   if [[ "$PYTHON_VERSION" == $PY36* ]]; then
     # security update note
     if [ "$PYTHON_VERSION" != "$LATEST_36" ]; then
       puts-warn "$SECURITY_UPDATE" "$LATEST_36"
-      echo "       Learn More: https://devcenter.heroku.com/articles/python-runtimes"
+      echo "       Learn More: $RUNTIME_LINK"
     fi
   fi
   if [[ "$PYTHON_VERSION" == $PY35* ]]; then
     # security update note
     if [ "$PYTHON_VERSION" != "$LATEST_35" ]; then
       puts-warn "$SECURITY_UPDATE" "$LATEST_35"
-      echo "       Learn More: https://devcenter.heroku.com/articles/python-runtimes"
+      echo "       Learn More: $RUNTIME_LINK"
     fi
   fi
   if [[ "$PYTHON_VERSION" == $PY34* ]]; then
     # security update note
     if [ "$PYTHON_VERSION" != "$LATEST_34" ]; then
       puts-warn "$SECURITY_UPDATE" "$LATEST_34"
-      echo "       Learn More: https://devcenter.heroku.com/articles/python-runtimes"
+      echo "       Learn More: $RUNTIME_LINK"
     fi
   fi
   if [[ "$PYTHON_VERSION" == $PY27* ]]; then
     # security update note
     if [ "$PYTHON_VERSION" != "$LATEST_27" ]; then
       puts-warn "$SECURITY_UPDATE" "$LATEST_27"
-      echo "       Learn More: https://devcenter.heroku.com/articles/python-runtimes"
+      echo "       Learn More: $RUNTIME_LINK"
     fi
   fi
 else
   cat "$TMP_CURL_OUTPUT"
   puts-warn "Requested runtime ($PYTHON_VERSION) is not available for this stack ($STACK)."
-  puts-warn "Aborting.  More info: https://devcenter.heroku.com/articles/python-support"
+  puts-warn "Aborting.  More info: $SUPPORT_LINK"
   exit 1
 fi
 
@@ -89,7 +91,7 @@ if [ ! "$SKIP_INSTALL" ]; then
     if ! curl "${VENDORED_PYTHON}" --verbose 2>>"$TMP_CURL_OUTPUT" | tar zxv -C .heroku/python &> /dev/null; then
       cat "$TMP_CURL_OUTPUT"
       puts-warn "Requested runtime ($PYTHON_VERSION) is not available for this stack ($STACK)."
-      puts-warn "Aborting.  More info: https://devcenter.heroku.com/articles/python-support"
+      puts-warn "Aborting.  More info: $SUPPORT_LINK"
       exit 1
     fi
 
