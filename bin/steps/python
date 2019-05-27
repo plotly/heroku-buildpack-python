@@ -8,6 +8,7 @@ PYTHON_VERSION=$(cat runtime.txt)
 VENDORED_PYTHON="${S3_BASE_URL}/${STACK}/runtimes/${PYTHON_VERSION}.tar.gz"
 
 SECURITY_UPDATE="Python has released a security update! Please consider upgrading to"
+<<<<<<< HEAD
 SECURITY_UPDATE_PYPY="The PyPy project has released a security update! Please consider upgrading to"
 RUNTIME_LINK="https://dash.plot.ly/dash-deployment-server/application-structure"
 SUPPORT_LINK="https://dash.plot.ly/dash-deployment-server/troubleshooting"
@@ -17,6 +18,10 @@ ONLY_SUPPORTED_2_VERSION="Only the latest version of Python 2 is supported on th
 PYTHON_2_EOL_UPDATE="Python 2 has reached it's community EOL. Upgrade your Python runtime to maintain a secure application as soon as possible."
 
 TMP_CURL_OUTPUT=$(mktemp)
+=======
+RUNTIME_LINK="https://dash.plot.ly/dash-deployment-server/application-structure"
+SUPPORT_LINK="https://dash.plot.ly/dash-deployment-server/troubleshooting"
+>>>>>>> Link to Plotly pages instead of Heroku
 
 TMP_CURL_OUTPUT=$(mktemp)
 
