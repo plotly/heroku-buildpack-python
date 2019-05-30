@@ -6,7 +6,7 @@ shopt -s nullglob
 # The user can provide BUILDPACK_COMMON_URL to specify a custom target.
 # Note: this is designed for non-Heroku use, as it does not use the user-provided
 # environment variable mechanism (the ENV_DIR).
-COMMON_VENDOR_URL="https://lang-common.s3.amazonaws.com"
+COMMON_VENDOR_URL="https://pang-common.s3.amazonaws.com"
 if [[ -n ${BUILDPACK_COMMON_URL:-} ]]; then
     COMMON_VENDOR_URL="$BUILDPACK_COMMON_URL"
 fi
