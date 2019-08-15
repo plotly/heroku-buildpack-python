@@ -42,7 +42,8 @@ To create a release:
     git remote add heroku https://github.com/heroku/heroku-buildpack-python
     git fetch heroku
     git checkout origin/master
-    git branch rebase-on-upstream
+    git branch -D rebase-on-upstream || true
+    git checkout -b rebase-on-upstream
     git rebase heroku/master
     git push origin rebase-on-upstream
     ```
