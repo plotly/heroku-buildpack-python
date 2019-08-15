@@ -49,14 +49,21 @@ To create a release:
 
 - Rebase our commits onto `heroku/heroku-buildpack-python`
     ```shell
+    # clone the repository
+    git clone https://github.com/plotly/heroku-buildpack-python
+    cd heroku-buildpack-python
+
+    # fetch heroku changes
     git remote rm heroku || true
     git remote add heroku https://github.com/heroku/heroku-buildpack-python
     git fetch heroku
-    git checkout origin/master
-    git branch -D rebase-on-upstream || true
-    git checkout -b rebase-on-upstream
-    git rebase heroku/master
-    git push origin rebase-on-upstream
+
+    # rebase our commits onto `heroku/heroku-buildpack-python`
+    # resolve any conflicts as necessary
+    git pull --rebase heroku master
+
+    # force push onto master
+    git push --force origin master
     ```
 - Create a tag, of the form `3.1.0b1`, where `3.1.0` is the On-Prem release
 we're currently working on and `b1` is a build ID that's incremented for
@@ -66,7 +73,7 @@ each build.
     git push --tags
     ```
 - Update
-[`herokuish.json`](https://github.com/plotly/herokuish/blob/master/herokuish.json)
+[`plotly/herokuish`](https://github.com/plotly/herokuish/blob/master/Dockerfile)
 to use the new version,
 [create a new Herokuish release](https://github.com/plotly/herokuish#releasing),
 and test with DDS.
