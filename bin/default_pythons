@@ -1,8 +1,13 @@
 #!/usr/bin/env bash
 
 DEFAULT_PYTHON_VERSION="python-3.6.9"
-LATEST_36="python-3.6.9"
+
+if [[ $PLOTLY_IS_AIRGAPPED -eq 1 ]]; then
+    DEFAULT_PYTHON_VERSION="python-3.6.5"
+fi
+
 LATEST_37="python-3.7.4"
+LATEST_36="python-3.6.9"
 LATEST_35="python-3.5.7"
 LATEST_34="python-3.4.10"
 LATEST_27="python-2.7.16"
