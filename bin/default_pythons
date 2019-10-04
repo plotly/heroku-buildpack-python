@@ -2,7 +2,7 @@
 
 DEFAULT_PYTHON_VERSION="python-3.6.8"
 
-if [[ $PLOTLY_IS_AIRGAPPED -eq 1 ]]; then
+if [[ "$PLOTLY_IS_AIRGAPPED" == "1" ]]; then
     DEFAULT_PYTHON_VERSION="python-3.6.5"
 fi
 
