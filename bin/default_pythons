@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+if [[ "$PLOTLY_IS_AIRGAPPED" == "1" ]]; then
+    DEFAULT_PYTHON_VERSION="python-3.6.12"
+fi
+
 # Disable unused env var warning, since shellcheck doesn't take into account
 # that this file is sourced. We don't want to use export since it exposes
 # the env vars to subprocesses.
