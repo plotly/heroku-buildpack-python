@@ -41,11 +41,13 @@ export BUILD_DIR CACHE_DIR ENV_DIR
 # environment variable mechanism (the ENV_DIR).
 VENDOR_URL="https://lang-python.s3.amazonaws.com/$STACK"
 if [[ -n ${BUILDPACK_VENDOR_URL:-} ]]; then
+    FALLBACK_VENDOR_URL="$VENDOR_URL"
     VENDOR_URL="$BUILDPACK_VENDOR_URL"
 elif [[ -n ${USE_STAGING_BINARIES} ]]; then
     VENDOR_URL="$USE_STAGING_BINARIES/$STACK"
 fi
 export VENDOR_URL
+export FALLBACK_VENDOR_URL
 
 # Default Python Versions
 # shellcheck source=bin/default_pythons
