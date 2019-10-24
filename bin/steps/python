@@ -23,15 +23,13 @@ if curl --output /dev/null --verbose --head --fail "$VENDORED_PYTHON" 2>"$TMP_CU
   if [[ "$PYTHON_VERSION" == $PY39* ]]; then
     if [ "$PYTHON_VERSION" != "$LATEST_39" ]; then
       puts-warn "$SECURITY_UPDATE" "$LATEST_39"
-      echo "       Learn More: https://devcenter.heroku.com/articles/python-runtimes"
-    fi
+      echo "       Learn More: $RUNTIME_LINK"
   fi
   if [[ "$PYTHON_VERSION" == $PY38* ]]; then
     # do things to alert the user of security release available
     if [ "$PYTHON_VERSION" != "$LATEST_38" ]; then
       puts-warn "$SECURITY_UPDATE" "$LATEST_38"
-      echo "       Learn More: https://devcenter.heroku.com/articles/python-runtimes"
-    fi
+      echo "       Learn More: $RUNTIME_LINK"
   fi
   if [[ "$PYTHON_VERSION" == $PY37* ]]; then
     # security update note
