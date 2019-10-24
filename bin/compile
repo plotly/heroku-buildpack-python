@@ -36,11 +36,17 @@ ENV_DIR=$3
 export BUILD_DIR CACHE_DIR ENV_DIR
 
 # Set the base URL for downloading buildpack assets like Python runtimes.
-# The user can provide BUILDPACK_S3_BASE_URL to specify a custom target.
 # Note: this is designed for non-Heroku use, as it does not use the user-provided
 # environment variable mechanism (the ENV_DIR).
-S3_BASE_URL="${BUILDPACK_S3_BASE_URL:-"https://heroku-buildpack-python.s3.amazonaws.com"}"
-# This has to be exported since it's used by the geo-libs step which is run in a subshell.
+VENDOR_URL="https://lang-python.s3.amazonaws.com/$STACK"
+if [[ -n ${BUILDPACK_VENDOR_URL:-} ]]; then
+    FALLBACK_VENDOR_URL="$VENDOR_URL"
+    VENDOR_URL="$BUILDPACK_VENDOR_URL"
+elif [[ -n ${USE_STAGING_BINARIES} ]]; then
+    VENDOR_URL="$USE_STAGING_BINARIES/$STACK"
+fi
+export VENDOR_URL
+export FALLBACK_VENDOR_URL
 
 # Default Python Versions
 # shellcheck source=bin/default_pythons
