@@ -38,7 +38,7 @@ sqlite3_install() {
     APT_OPTIONS="$APT_OPTIONS -o dir::etc::sourcelist=/etc/apt/sources.list"
   fi
 	 
-  cat /etc/apt/sources.list
+  ls -la /etc/apt
   apt-get $APT_OPTIONS update
   if [ -z "$HEADERS_ONLY" ]; then
     apt-get $APT_OPTIONS -y -d --reinstall install libsqlite3-dev="$SQLITE3_VERSION" sqlite3="$SQLITE3_VERSION"
