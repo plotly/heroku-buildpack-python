@@ -33,8 +33,7 @@ sqlite3_install() {
   APT_OPTIONS="$APT_OPTIONS -o dir::state=$APT_STATE_DIR"
   APT_OPTIONS="$APT_OPTIONS -o dir::etc::sourcelist=/etc/apt/sources.list"
 
-  ls -la /etc
-  ls -la /etc/apt/
+  id
   rm -f /etc/apt/sources.list
   apt-get $APT_OPTIONS update
   if [ -z "$HEADERS_ONLY" ]; then
