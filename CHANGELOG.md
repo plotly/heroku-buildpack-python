@@ -1,5 +1,10 @@
 # Python Buildpack Changelog
 
+# Master
+
+- Bug fix: Sqlite3 version bump
+
+--------------------------------------------------------------------------------
 # 154 (2019-07-17)
 
 Fix python 3.5.7 formula actually building 3.7.2
