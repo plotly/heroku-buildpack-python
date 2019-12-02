@@ -188,6 +188,8 @@ add docs and make target for heroku-18 bob builds
 
 ## v154 (2019-07-17)
 
+- Bug fix: Sqlite3 version bump
+
 Fix python 3.5.7 formula actually building 3.7.2
 
 ## v153 (2019-06-21)
