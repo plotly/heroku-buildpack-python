@@ -1,5 +1,23 @@
 # Python Buildpack Changelog
 
+# Plotly Changes
+
+- Python fetched via BUILDPACK_VENDOR_URL
+- VENDOR_URL used as a fallback if BUILDPACK_VENDOR_URL fails and PLOTLY_IS_AIRGAPPED is false
+- Allow custom PIP_INDEX_URL
+- Default of python-3.6.5 when PLOTLY_IS_AIRGAPPED
+- Add support for python < 2.7.12 via custom heroku-18-libssl1.0 build
+- Add python-generation helper script
+- Reference Plotly pages instead of Heroku for runtime security/availability warnings
+- Display Python download output only on failure
+- Display stdlib.sh download output only on failure
+- Show stdlib head when sourcing it fails
+- Extend all curl calls to be verbose
+- Allow overriding base pip packages install location
+- Allow overriding lang-common pull location
+
+# Upstream (heroku/heroku-buildpack-python) Changes
+
 # Master
 
 - Add failcase for cache busting
