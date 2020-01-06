@@ -20,11 +20,11 @@ if [ ! "$SKIP_PIP_INSTALL" ]; then
     fi
     #
     # PIP_INDEX_URL allows for custom pypi URL to be used.
-    if [[ -r "$ENV_DIR/PIP_INDEX_URL" ]]; then
-        PIP_INDEX_URL="$(cat "$ENV_DIR/PIP_INDEX_URL")"
-        export PIP_INDEX_URL
-        mcount "buildvar.PIP_INDEX_URL"
-    fi
+    # if [[ -r "$ENV_DIR/PIP_INDEX_URL" ]]; then
+    #     PIP_INDEX_URL="$(cat "$ENV_DIR/PIP_INDEX_URL")"
+    #     export PIP_INDEX_URL
+    #     mcount "buildvar.PIP_INDEX_URL"
+    # fi
 
     set +e
 
