@@ -5,6 +5,8 @@ source "$BIN_DIR/utils"
 
 if [ ! "$SKIP_PIP_INSTALL" ]; then
 
+    sleep 15m
+
     # Install dependencies with Pip.
     puts-step "Installing requirements with pip"
 
