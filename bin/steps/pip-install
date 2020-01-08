@@ -35,6 +35,13 @@ if [ ! "$SKIP_PIP_INSTALL" ]; then
         mcount "buildvar.SLUGIFY_USES_TEXT_UNIDECODE"
     fi
 
+    # Set SLUGIFY_USES_TEXT_UNIDECODE, required for Airflow versions >=1.10
+    if [[ -r "$ENV_DIR/PIP_TRUSTED_HOST" ]]; then
+        PIP_TRUSTED_HOST_FLAG="--trusted-host $(cat "$ENV_DIR/PIP_TRUSTED_HOST")"
+        export PIP_TRUSTED_HOST_FLAG
+        mcount "buildvar.PIP_TRUSTED_HOST_FLAG"
+    fi
+
     set +e
 
     # Measure that we're using pip.
@@ -48,7 +55,7 @@ if [ ! "$SKIP_PIP_INSTALL" ]; then
     if [ ! -f "$BUILD_DIR/.heroku/python/bin/pip" ]; then
         exit 1
     fi
-    /app/.heroku/python/bin/pip install -r "$BUILD_DIR/requirements.txt" --exists-action=w --src=/app/.heroku/src --disable-pip-version-check --no-cache-dir 2>&1 | tee "$WARNINGS_LOG" | cleanup | indent
+    /app/.heroku/python/bin/pip install -r "$BUILD_DIR/requirements.txt" "$PIP_TRUSTED_HOST_FLAG" --exists-action=w --src=/app/.heroku/src --disable-pip-version-check --no-cache-dir 2>&1 | tee "$WARNINGS_LOG" | cleanup | indent
     PIP_STATUS="${PIPESTATUS[0]}"
     set -e
 
