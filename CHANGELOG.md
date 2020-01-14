@@ -2,7 +2,6 @@
 
 # Plotly Changes
 
-- Python fetched via BUILDPACK_VENDOR_URL
 - VENDOR_URL used as a fallback if BUILDPACK_VENDOR_URL fails and PLOTLY_IS_AIRGAPPED is false
 - Allow custom PIP_INDEX_URL
 - Default of python-3.6.5 when PLOTLY_IS_AIRGAPPED
