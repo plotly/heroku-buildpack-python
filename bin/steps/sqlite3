@@ -3,8 +3,6 @@
 # shellcheck source=bin/utils
 source "$BIN_DIR/utils"
 
-sqlite3_version()
-
 sqlite3_install() {
   HEROKU_PYTHON_DIR="$1"
   HEADERS_ONLY="$3"
