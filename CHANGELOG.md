@@ -2,6 +2,9 @@
 
 # Plotly Changes
 
+- SQLite3 is only installed for Python v2.7.15+ and v3.6.6+
+- Pip is installed via vendored get-pip.py when PLOTLY_IS_AIRGAPPED is true
+- Python fetched via BUILDPACK_VENDOR_URL
 - VENDOR_URL used as a fallback if BUILDPACK_VENDOR_URL fails and PLOTLY_IS_AIRGAPPED is false
 - Allow custom PIP_INDEX_URL
 - Default of python-3.6.5 when PLOTLY_IS_AIRGAPPED

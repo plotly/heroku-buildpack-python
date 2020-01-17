@@ -10,6 +10,12 @@ by Plotly, and includes the following changes:
 * Links to [DDS](https://dash.plot.ly/dash-deployment-server) docs instead of
 to Heroku
 
+## Changelog
+
+Please update the changelog with all updates made to our fork of the upstream buildpack.
+This helps maintain a list of behaviour that we are looking to preserve should the need
+to resolve any conflicts with upstream arises.
+
 ## Tests
 
 The buildpack tests use [Docker](https://www.docker.com/) to simulate
