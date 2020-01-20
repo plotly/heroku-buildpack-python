@@ -144,20 +144,6 @@ fi
 
 PIP_DIR="$ROOT_DIR/vendor"
 
-if [[ "$PLOTLY_IS_AIRGAPPED" != "1" ]]; then
-
-  # Heroku uses the get-pip utility maintained by the Python community to vendor Pip.
-  # https://github.com/pypa/get-pip
-  GETPIP="https://lang-python.s3.amazonaws.com/etc/get-pip.py"
-  PIP_DIR="$ROOT_DIR"
-
-  if ! curl -s "${GETPIP}" -o "$PIP_DIR/get-pip.py" &> /dev/null; then
-      mcount "failure.python.get-pip"
-      echo "Failed to pull down get-pip"
-      exit 1
-  fi
-fi
-
 rm -f "$TMP_CURL_OUTPUT"
 
 # If Pip isn't up to date:
