@@ -142,15 +142,7 @@ if [ ! "$SKIP_INSTALL" ]; then
   hash -r
 fi
 
-# Heroku uses the get-pip utility maintained by the Python community to vendor Pip.
-# https://github.com/pypa/get-pip
-GETPIP="https://lang-python.s3.amazonaws.com/etc/get-pip.py"
-
-if ! curl -s "${GETPIP}" -o "$ROOT_DIR/get-pip.py" &> /dev/null; then
-    mcount "failure.python.get-pip"
-    echo "Failed to pull down get-pip"
-    exit 1
-fi
+PIP_DIR="$ROOT_DIR/vendor"
 
 rm -f "$TMP_CURL_OUTPUT"
 
@@ -167,10 +159,10 @@ if [ "$FRESH_PYTHON" ] || [[ ! $(pip --version) == *$PIP_UPDATE* ]]; then
   # which is useful if CI for heroku applications is run in non-heroku environments
   # where access to pypi is strictly controlled
   if [[ -n "$GET_PIP_PYPI_INDEX_URL" ]]; then
-    /app/.heroku/python/bin/python "$ROOT_DIR/get-pip.py" --no-index "$GET_PIP_PYPI_INDEX_URL/pip/pip-9.0.2-py2.py3-none-any.whl" "$GET_PIP_PYPI_INDEX_URL/setuptools/setuptools-39.0.1-py2.py3-none-any.whl" "$GET_PIP_PYPI_INDEX_URL/wheel/wheel-0.31.1-py2.py3-none-any.whl" &> /dev/null
+    /app/.heroku/python/bin/python "$PIP_DIR/get-pip.py" --no-index "$GET_PIP_PYPI_INDEX_URL/pip/pip-9.0.2-py2.py3-none-any.whl" "$GET_PIP_PYPI_INDEX_URL/setuptools/setuptools-39.0.1-py2.py3-none-any.whl" "$GET_PIP_PYPI_INDEX_URL/wheel/wheel-0.31.1-py2.py3-none-any.whl" &> /dev/null
     /app/.heroku/python/bin/pip install --no-index "$GET_PIP_PYPI_INDEX_URL/setuptools/setuptools-39.0.1-py2.py3-none-any.whl" &> /dev/null
   else
-    /app/.heroku/python/bin/python "$ROOT_DIR/get-pip.py" pip=="$PIP_UPDATE" &> /dev/null
+    /app/.heroku/python/bin/python "$PIP_DIR/get-pip.py" pip=="$PIP_UPDATE" &> /dev/null
     /app/.heroku/python/bin/pip install "$ROOT_DIR/vendor/setuptools-39.0.1-py2.py3-none-any.whl" &> /dev/null
   fi
 
