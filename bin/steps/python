@@ -52,21 +52,21 @@ if curl --output /dev/null --verbose --head --fail "$VENDORED_PYTHON" 2>"$TMP_CU
   fi
   if [[ "$PYTHON_VERSION" == $PY36* ]]; then
     # security update note
-    if [ "$PYTHON_VERSION" != "$LATEST_36" ]; then
+    if [[ "$PYTHON_VERSION" < "$LATEST_36" ]]; then
       puts-warn "$SECURITY_UPDATE" "$LATEST_36"
       echo "       Learn More: $RUNTIME_LINK"
     fi
   fi
   if [[ "$PYTHON_VERSION" == $PY35* ]]; then
     # security update note
-    if [ "$PYTHON_VERSION" != "$LATEST_35" ]; then
+    if [[ "$PYTHON_VERSION" < "$LATEST_35" ]]; then
       puts-warn "$SECURITY_UPDATE" "$LATEST_35"
       echo "       Learn More: $RUNTIME_LINK"
     fi
   fi
   if [[ "$PYTHON_VERSION" == $PY34* ]]; then
     # security update note
-    if [ "$PYTHON_VERSION" != "$LATEST_34" ]; then
+    if [[ "$PYTHON_VERSION" < "$LATEST_34" ]]; then
       puts-warn "$SECURITY_UPDATE" "$LATEST_34"
       echo "       Learn More: $RUNTIME_LINK"
     fi
@@ -75,6 +75,7 @@ if curl --output /dev/null --verbose --head --fail "$VENDORED_PYTHON" 2>"$TMP_CU
     puts-warn "$PYTHON_2_EOL_UPDATE"
     echo "       Learn More: https://devcenter.heroku.com/articles/python-2-7-eol-faq"
     # security update note
+<<<<<<< HEAD
     if [ "$PYTHON_VERSION" != "$LATEST_27" ]; then
       puts-warn "$ONLY_SUPPORTED_2_VERSION" "$LATEST_27"
       echo "       Learn More: $RUNTIME_LINK"
@@ -91,6 +92,10 @@ if curl --output /dev/null --verbose --head --fail "$VENDORED_PYTHON" 2>"$TMP_CU
     # security update note
     if [ "$PYTHON_VERSION" != "$LATEST_PYPY_36" ]; then
       puts-warn "$SECURITY_UPDATE_PYPY" "$LATEST_PYPY_36"
+=======
+    if [[ "$PYTHON_VERSION" < "$LATEST_27" ]]; then
+      puts-warn "$SECURITY_UPDATE" "$LATEST_27"
+>>>>>>> Do not warn if python version higher than LATEST_*
       echo "       Learn More: $RUNTIME_LINK"
     fi
   fi
