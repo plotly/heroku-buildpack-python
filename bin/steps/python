@@ -30,42 +30,35 @@ check_runtime () {
 # check if runtime exists
 if check_runtime; then
   if [[ "$PYTHON_VERSION" == $PY39* ]]; then
-    if [ "$PYTHON_VERSION" != "$LATEST_39" ]; then
+    if [ "$PYTHON_VERSION" < "$LATEST_39" ]; then
       puts-warn "$SECURITY_UPDATE" "$LATEST_39"
       echo "       Learn More: $RUNTIME_LINK"
     fi
   fi
   if [[ "$PYTHON_VERSION" == $PY38* ]]; then
     # do things to alert the user of security release available
-    if [ "$PYTHON_VERSION" != "$LATEST_38" ]; then
-      puts-warn "$SECURITY_UPDATE" "$LATEST_38"
-      echo "       Learn More: $RUNTIME_LINK"
-    fi
-  fi
-  if [[ "$PYTHON_VERSION" == $PY37* ]]; then
-    # security update note
-    if [ "$PYTHON_VERSION" != "$LATEST_37" ]; then
+    if [[ "$PYTHON_VERSION" < "$LATEST_37" ]]; then
       puts-warn "$SECURITY_UPDATE" "$LATEST_37"
       echo "       Learn More: $RUNTIME_LINK"
     fi
   fi
   if [[ "$PYTHON_VERSION" == $PY36* ]]; then
     # security update note
-    if [ "$PYTHON_VERSION" != "$LATEST_36" ]; then
+    if [[ "$PYTHON_VERSION" < "$LATEST_36" ]]; then
       puts-warn "$SECURITY_UPDATE" "$LATEST_36"
       echo "       Learn More: $RUNTIME_LINK"
     fi
   fi
   if [[ "$PYTHON_VERSION" == $PY35* ]]; then
     # security update note
-    if [ "$PYTHON_VERSION" != "$LATEST_35" ]; then
+    if [[ "$PYTHON_VERSION" < "$LATEST_35" ]]; then
       puts-warn "$SECURITY_UPDATE" "$LATEST_35"
       echo "       Learn More: $RUNTIME_LINK"
     fi
   fi
   if [[ "$PYTHON_VERSION" == $PY34* ]]; then
     # security update note
-    if [ "$PYTHON_VERSION" != "$LATEST_34" ]; then
+    if [[ "$PYTHON_VERSION" < "$LATEST_34" ]]; then
       puts-warn "$SECURITY_UPDATE" "$LATEST_34"
       echo "       Learn More: $RUNTIME_LINK"
     fi
@@ -74,7 +67,7 @@ if check_runtime; then
     puts-warn "$PYTHON_2_EOL_UPDATE"
     echo "       Learn More: https://devcenter.heroku.com/articles/python-2-7-eol-faq"
     # security update note
-    if [ "$PYTHON_VERSION" != "$LATEST_27" ]; then
+    if [ "$PYTHON_VERSION" < "$LATEST_27" ]; then
       puts-warn "$ONLY_SUPPORTED_2_VERSION" "$LATEST_27"
       echo "       Learn More: $RUNTIME_LINK"
     fi
