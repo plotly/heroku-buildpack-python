@@ -42,24 +42,6 @@ test framework.
 
 To create a release:
 
-- Rebase our commits onto `heroku/heroku-buildpack-python`
-    ```shell
-    # clone the repository
-    git clone https://github.com/plotly/heroku-buildpack-python
-    cd heroku-buildpack-python
-
-    # fetch heroku changes
-    git remote rm heroku || true
-    git remote add heroku https://github.com/heroku/heroku-buildpack-python
-    git fetch heroku
-
-    # rebase our commits onto `heroku/heroku-buildpack-python`
-    # resolve any conflicts as necessary
-    git pull --rebase heroku master
-
-    # force push onto master
-    git push --force origin master
-    ```
 - Create a tag, of the form `3.1.0b1`, where `3.1.0` is the On-Prem release
 we're currently working on and `b1` is a build ID that's incremented for
 each build.
@@ -74,4 +56,34 @@ to use the new version,
 and test with DDS.
 - If needed, fix things on your branch and iterate by creating a new tag and
 a new Herokuish release.
-- Create a PR, get it approved, and merge.
+- Create a PR against the appropriate branch (maintenance releases should be made
+against the release branch), get it approved, and merge.
+
+## Upstream Rebase
+
+After each major release of Dash Enterprise, our buildpack fork should be
+rebased onto `heroku/heroku-buildpack-python` as needed. This should happen
+as soon as possible after a major release to allow for enough time to test
+and resolve any issues before the start of another freeze cycle. These
+rebases could potentially introduce a substantial amount of changes,
+which are likely too risky to introduce during a feature freeze.
+
+Steps for rebase:
+
+    # add a fresh heroku remote
+    git remote rm heroku || true
+    git remote add heroku https://github.com/heroku/heroku-buildpack-python
+
+    # fetch heroku changes
+    git fetch heroku
+    git checkout origin/master
+    git branch -D rebase-on-upstream || true
+    git checkout -b rebase-on-upstream
+
+    # rebase our commits onto `heroku/heroku-buildpack-python`
+    # resolve any conflicts as necessary
+    # update vendored get-pip.py as necessary
+    git rebase heroku/master
+    git push origin rebase-on-upstream
+
+Once the rebase is complete, simply run through the release process as detailed above.
