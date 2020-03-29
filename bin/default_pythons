@@ -6,7 +6,7 @@ if [[ "$PLOTLY_IS_AIRGAPPED" == "1" ]]; then
     DEFAULT_PYTHON_VERSION="python-3.6.5"
 fi
 
-LATEST_38="python-3.8.1"
+LATEST_38="python-3.8.2"
 LATEST_37="python-3.7.6"
 LATEST_36="python-3.6.10"
 LATEST_35="python-3.5.7"
