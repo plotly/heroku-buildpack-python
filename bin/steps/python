@@ -17,25 +17,20 @@ PYTHON_2_EOL_UPDATE="Python 2 has reached it's community EOL. Upgrade your Pytho
 
 TMP_CURL_OUTPUT=$(mktemp)
 
-check_runtime () {
-  if ! curl --output /dev/null --verbose --head --fail "$VENDORED_PYTHON" 2>"$TMP_CURL_OUTPUT" \
-      && [[ "$PLOTLY_IS_AIRGAPPED" == "0" ]]; then
-    puts-warn "Falling back to heroku vendor."
-    VENDORED_PYTHON="${FALLBACK_VENDOR_URL}/runtimes/$PYTHON_VERSION.tar.gz"
-    curl --output /dev/null --verbose --head --fail "$VENDORED_PYTHON" 2>"$TMP_CURL_OUTPUT"
-  fi
-  return $?
-}
-
 # check if runtime exists
 if check_runtime; then
   if [[ "$PYTHON_VERSION" == $PY39* ]]; then
     if [ "$PYTHON_VERSION" < "$LATEST_39" ]; then
       puts-warn "$SECURITY_UPDATE" "$LATEST_39"
       echo "       Learn More: $RUNTIME_LINK"
+  if [[ "$PYTHON_VERSION" == $PY38* ]]; then
+    # do things to alert the user of security release available
+    if [ "$PYTHON_VERSION" < "$LATEST_38" ]; then
+      puts-warn "$SECURITY_UPDATE" "$LATEST_38"
+      echo "       Learn More: $RUNTIME_LINK"
     fi
   fi
-  if [[ "$PYTHON_VERSION" == $PY38* ]]; then
+  if [[ "$PYTHON_VERSION" == $PY37* ]]; then
     # do things to alert the user of security release available
     if [[ "$PYTHON_VERSION" < "$LATEST_37" ]]; then
       puts-warn "$SECURITY_UPDATE" "$LATEST_37"
