@@ -1,4 +1,5 @@
-FROM heroku/heroku:18-build
+# Please ensure that this Dockerfile is in sync with ../Dockerfile.heroku-18-libssl1.0
+FROM heroku/heroku:18-build.v16
 
 ENV WORKSPACE_DIR="/app/builds" \
     S3_BUCKET="heroku-buildpack-python" \
