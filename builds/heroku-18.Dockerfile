@@ -1,3 +1,4 @@
+# Please ensure that this Dockerfile is in sync with ../Dockerfile.heroku-18-libssl1.0
 FROM heroku/heroku:18-build
 
 ENV WORKSPACE_DIR="/app/builds" \
