@@ -1,3 +1,4 @@
+# Please ensure that this Dockerfile is in sync with builds/heroku-18.Dockerfile
 FROM heroku/heroku:18-build
 
 WORKDIR /app
