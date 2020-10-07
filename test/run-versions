@@ -62,8 +62,7 @@ testPython3_4_warn() {
   fi
   compile "python3_4_warn"
   assertCaptured "Installing python-3.4.9"
-  assertCaptured "security update!"
-  assertCaptured "${LATEST_34}"
+  assertCaptured "has been deprecated"
   # Can't use `assertCapturedSuccess` since Pip outputs a Python 3.4 EOL warning to stderr,
   # and the newest Pip that works on Python 3.4 doesn't support `PIP_NO_PYTHON_VERSION_WARNING`.
   assertCapturedSuccessWithStdErr
@@ -89,8 +88,6 @@ testPython3_5_warn() {
   fi
   compile "python3_5_warn"
   assertCaptured "Installing python-3.5.6"
-  assertCaptured "security update!"
-  assertCaptured "${LATEST_35}"
   assertCapturedSuccess
 }
 
