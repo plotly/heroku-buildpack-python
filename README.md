@@ -21,17 +21,22 @@ to resolve any conflicts with upstream arises.
 The buildpack tests use [Docker](https://www.docker.com/) to simulate
 Heroku's [stack images.](https://devcenter.heroku.com/articles/stack)
 
-To run the test suite:
+To run the test suite against the default stack:
 
 ```
 make test
 ```
 
-Or to test in a particular stack:
+Or to test against a particular stack:
 
 ```
-make test-heroku-18
-make test-heroku-16
+make test STACK=heroku-16
+```
+
+To run only a subset of the tests:
+
+```
+make test TEST_CMD=tests/versions
 ```
 
 The tests are run via the vendored
@@ -52,7 +57,7 @@ each build.
 - Update
 [`plotly/herokuish`](https://github.com/plotly/herokuish/blob/master/Dockerfile)
 to use the new version,
-[create a new Herokuish release](https://github.com/plotly/herokuish#releasing),
+[create a new Herokuish release](https://github.com/pREADME.mdlotly/herokuish#releasing),
 and test with DDS.
 - If needed, fix things on your branch and iterate by creating a new tag and
 a new Herokuish release.

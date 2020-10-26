@@ -2,32 +2,13 @@
 shopt -s extglob
 shopt -s nullglob
 
-# Set the Common lib's internet target for downloading common dependencies.
-# The user can provide BUILDPACK_COMMON_URL to specify a custom target.
-# Note: this is designed for non-Heroku use, as it does not use the user-provided
-# environment variable mechanism (the ENV_DIR).
-COMMON_VENDOR_URL="https://lang-common.s3.amazonaws.com"
-if [[ -n ${BUILDPACK_COMMON_URL:-} ]]; then
-    COMMON_VENDOR_URL="$BUILDPACK_COMMON_URL"
-fi
-export COMMON_VENDOR_URL
-
-# The standard library.
-if [[ ! -f  /tmp/stdlib.sh ]]; then
-  TMP_CURL_OUTPUT=$(mktemp)
-  curl --retry 3 --verbose "${COMMON_VENDOR_URL}/buildpack-stdlib/v8/stdlib.sh" > /tmp/stdlib.sh 2>"$TMP_CURL_OUTPUT" || {
-    cat "$TMP_CURL_OUTPUT"
-  }
-fi
-# shellcheck source=/dev/null
-if ! source /tmp/stdlib.sh ; then
-    echo Running /tmp/stdlib.sh failed.
-    head -20 /tmp/stdlib.sh
-    echo Download output was:
-    cat $TMP_CURL_OUTPUT
-    exit 1
-fi
-rm -f $TMP_CURL_OUTPUT
+# This is necessary since this script is sometimes sourced from
+# subshells that don't have the variables from bin/compile.
+# Remove this once we no longer wrap all the things in `sub_env`.
+BIN_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+ROOT_DIR=$(dirname "${BIN_DIR}")
+# shellcheck source=vendor/buildpack-stdlib_v8.sh
+source "${ROOT_DIR}/vendor/buildpack-stdlib_v8.sh"
 
 if [ "$(uname)" == Darwin ]; then
     sed() { command sed -l "$@"; }
