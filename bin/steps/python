@@ -192,9 +192,20 @@ else
   PIP_TO_INSTALL="${PIP_WHEEL}"
 fi
 
+PIP_DIR="$ROOT_DIR/vendor"
+
 puts-step "Installing pip ${PIP_VERSION}, setuptools ${SETUPTOOLS_VERSION} and wheel ${WHEEL_VERSION}"
 
-/app/.heroku/python/bin/python "${PIP_WHEEL}/pip" install --quiet --disable-pip-version-check --no-cache \
+if [[ -n "$GET_PIP_PYPI_INDEX_URL" ]]; then
+  /app/.heroku/python/bin/python "${PIP_WHEEL}/pip" --no-index "$GET_PIP_PYPI_INDEX_URL/pip/pip-9.0.2-py2.py3-none-any.whl" \
+  "$GET_PIP_PYPI_INDEX_URL/setuptools/setuptools-39.0.1-py2.py3-none-any.whl" "$GET_PIP_PYPI_INDEX_URL/wheel/wheel-0.31.1-py2.py3-none-any.whl" &> /dev/null
+  /app/.heroku/python/bin/python "${PIP_WHEEL}/pip" install --no-index "$GET_PIP_PYPI_INDEX_URL/setuptools/setuptools-39.0.1-py2.py3-none-any.whl" &> /dev/null
+else
+  /app/.heroku/python/bin/python "${PIP_WHEEL}/pip" install --quiet --disable-pip-version-check --no-cache \
   "${PIP_TO_INSTALL}" "setuptools==${SETUPTOOLS_VERSION}" "wheel==${WHEEL_VERSION}"
+fi
 
 hash -r
+
+
+
