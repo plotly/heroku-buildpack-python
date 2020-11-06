@@ -165,7 +165,7 @@ if [ "$FRESH_PYTHON" ] || [[ ! $(pip --version) == *$PIP_UPDATE* ]]; then
   # which is useful if CI for heroku applications is run in non-heroku environments
   # where access to pypi is strictly controlled
   if [[ -n "$GET_PIP_PYPI_INDEX_URL" ]]; then
-    /app/.heroku/python/bin/python "$PIP_DIR/get-pip.py" --no-index "$GET_PIP_PYPI_INDEX_URL/pip/pip-9.0.2-py2.py3-none-any.whl" "$GET_PIP_PYPI_INDEX_URL/setuptools/setuptools-39.0.1-py2.py3-none-any.whl" "$GET_PIP_PYPI_INDEX_URL/wheel/wheel-0.31.1-py2.py3-none-any.whl" &> /dev/null
+    /app/.heroku/python/bin/python "$PIP_DIR/get-pip.py" --no-index "$GET_PIP_PYPI_INDEX_URL/pip/pip-20.2.4-py2.py3-none-any.whl" "$GET_PIP_PYPI_INDEX_URL/setuptools/setuptools-39.0.1-py2.py3-none-any.whl" "$GET_PIP_PYPI_INDEX_URL/wheel/wheel-0.31.1-py2.py3-none-any.whl" &> /dev/null
     /app/.heroku/python/bin/pip install --no-index "$GET_PIP_PYPI_INDEX_URL/setuptools/setuptools-39.0.1-py2.py3-none-any.whl" &> /dev/null
   else
     /app/.heroku/python/bin/python "$PIP_DIR/get-pip.py" pip=="$PIP_UPDATE" &> /dev/null
