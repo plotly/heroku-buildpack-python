@@ -1,6 +1,5 @@
 # Python Buildpack Changelog
 
-<<<<<<< HEAD
 # Plotly Changes
 
 - SQLite3 is only installed for Python v2.7.15+ and v3.6.6+
@@ -21,9 +20,6 @@
 # Upstream (heroku/heroku-buildpack-python) Changes
 
 # Master
-=======
-## Unreleased
->>>>>>> heroku/main
 
 
 ## v186 (2020-11-18)
