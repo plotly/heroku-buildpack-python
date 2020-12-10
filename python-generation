@@ -1,38 +1,31 @@
 #!/usr/bin/env bash
-
 process-python() {
   declare VERSION="$1"
   local IMAGE=python-buildenv-heroku-18
-
   if [[ "$VERSION" == "2.7.9" ]] || [[ "$VERSION" == "2.7.10" ]] || [[ "$VERSION" == "2.7.11" ]] || [[ "$VERSION" == "2.7.12" ]]; then
     IMAGE=python-buildenv-heroku-18-libssl1.0
   fi
-
   echo "python-$VERSION"
   docker rm -f "python-${VERSION}" >/dev/null 2>&1 || true
-  docker run --name "python-${VERSION}" "$IMAGE" bob deploy "runtimes/python-${VERSION}" > "tmp/${VERSION}.log"
+  docker run --name "python-${VERSION}" "$IMAGE" bob deploy "runtimes/python-${VERSION}" > "tmp/${VERSION}.log" 2>&1
   file=$(cat "tmp/${VERSION}.log" | grep "Created:" | cut -d ' ' -f2 | tr -d '\n' | tr -d '\r')
-  docker cp "python-${VERSION}:${file}" "$(PWD)/tmp/python-${VERSION}.tar.gz"
+  docker cp "python-${VERSION}:${file}" "$(pwd)/tmp/python-${VERSION}.tar.gz"
   docker rm "python-${VERSION}" >/dev/null 2>&1 || true
   rm "tmp/${VERSION}.log"
 }
-
 main() {
   declare VERSION="$1"
   mkdir -p tmp
-
   [[ ! -L Dockerfile.heroku-18 ]] && ln -s builds/heroku-18.Dockerfile Dockerfile.heroku-18
   docker build -q -f Dockerfile.heroku-18-libssl1.0 -t python-buildenv-heroku-18-libssl1.0 .
   docker build -q -f Dockerfile.heroku-18 -t python-buildenv-heroku-18 .
-
   if [[ -n "$VERSION" ]]; then
     process-python "$VERSION"
   else
-    versions=("2.7.9" "2.7.10" "2.7.11" "2.7.12" "2.7.13" "2.7.14" "2.7.15" "2.7.16" "3.6.0" "3.6.1" "3.6.2" "3.6.3" "3.6.4" "3.6.5" "3.6.6" "3.6.7" "3.6.8" "3.6.9" "3.6.10" "3.7.0" "3.7.1" "3.7.2" "3.7.3" "3.7.4" "3.7.5" "3.7.6" "3.8.0" "3.8.1" "3.8.2")
+    versions=("2.7.9" "2.7.10" "2.7.11" "2.7.12" "2.7.13" "2.7.14" "2.7.15" "2.7.16" "3.6.0" "3.6.1" "3.6.2" "3.6.3" "3.6.4" "3.6.5" "3.6.6" "3.6.7" "3.6.8" "3.6.9" "3.6.10" "3.7.0" "3.7.1" "3.7.2" "3.7.3" "3.7.4" "3.7.5" "3.7.6" "3.8.0" "3.8.1" "3.8.2" "3.8.3" "3.8.4" "3.8.5" "3.8.6" "3.9.0")
     for version in "${versions[@]}"; do
       process-python "$version"
     done
   fi
 }
-
 main "$@"
