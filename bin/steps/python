@@ -179,6 +179,7 @@ fi
 PIP_WHEEL_FILENAME="pip-${PIP_VERSION}-py2.py3-none-any.whl"
 PIP_WHEEL_URL="${S3_BASE_URL}/simple/${PIP_WHEEL_FILENAME}"
 PIP_WHEEL="${TMPDIR:-/tmp}/${PIP_WHEEL_FILENAME}"
+puts-step "Downloading pip.. $PIP_WHEEL_URL"
 
 if ! curl -sSf "${PIP_WHEEL_URL}" -o "$PIP_WHEEL"; then
   mcount "failure.python.download-pip"
