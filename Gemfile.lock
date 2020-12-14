@@ -3,7 +3,7 @@ GEM
   specs:
     diff-lcs (1.4.4)
     erubis (2.7.0)
-    excon (0.78.0)
+    excon (0.78.1)
     heroics (0.1.1)
       erubis (~> 2.0)
       excon
