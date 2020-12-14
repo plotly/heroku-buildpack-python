@@ -1,4 +1,4 @@
-ENV['HATCHET_BUILDPACK_BASE'] = 'https://github.com/' + ENV['TRAVIS_REPO_SLUG'] + '.git'
+ENV['HATCHET_BUILDPACK_BASE'] = 'https://github.com/heroku/heroku-buildpack-python.git'
 
 require 'rspec/core'
 require 'rspec/retry'
@@ -13,11 +13,6 @@ RSpec.configure do |config|
   config.expect_with :rspec do |c|
     c.syntax = :expect
   end
-end
-
-if ENV['TRAVIS']
-  # Don't execute tests against "merge" commits
-  exit 0 if ENV['TRAVIS_PULL_REQUEST'] != 'false' && ENV['TRAVIS_BRANCH'] == 'master'
 end
 
 DEFAULT_STACK = 'heroku-18'

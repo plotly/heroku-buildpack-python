@@ -2,27 +2,34 @@
 shopt -s extglob
 shopt -s nullglob
 
-# Set the Common lib's internet target for downloading common dependencies.
+# This is necessary since this script is sometimes sourced from
+# subshells that don't have the variables from bin/compile.
+# Remove this once we no longer wrap all the things in `sub_env`.
+BIN_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+ROOT_DIR=$(dirname "${BIN_DIR}")
+# shellcheck source=vendor/buildpack-stdlib_v8.sh
+STDLIB_SOURCE="${ROOT_DIR}/vendor/buildpack-stdlib_v8.sh"
+
 # The user can provide BUILDPACK_COMMON_URL to specify a custom target.
 # Note: this is designed for non-Heroku use, as it does not use the user-provided
 # environment variable mechanism (the ENV_DIR).
-COMMON_VENDOR_URL="https://lang-common.s3.amazonaws.com"
 if [[ -n ${BUILDPACK_COMMON_URL:-} ]]; then
     COMMON_VENDOR_URL="$BUILDPACK_COMMON_URL"
+    STDLIB_SOURCE="/tmp/stdlib.sh"
 fi
 export COMMON_VENDOR_URL
 
 # The standard library.
-if [[ ! -f  /tmp/stdlib.sh ]]; then
+if [[ ! -f  "$STDLIB_SOURCE" ]]; then
   TMP_CURL_OUTPUT=$(mktemp)
-  curl --retry 3 --verbose "${COMMON_VENDOR_URL}/buildpack-stdlib/v8/stdlib.sh" > /tmp/stdlib.sh 2>"$TMP_CURL_OUTPUT" || {
+  curl --retry 3 --verbose "${COMMON_VENDOR_URL}/buildpack-stdlib/v8/stdlib.sh" > "$STDLIB_SOURCE" 2>"$TMP_CURL_OUTPUT" || {
     cat "$TMP_CURL_OUTPUT"
   }
 fi
 # shellcheck source=/dev/null
-if ! source /tmp/stdlib.sh ; then
-    echo Running /tmp/stdlib.sh failed.
-    head -20 /tmp/stdlib.sh
+if ! source "$STDLIB_SOURCE" ; then
+    echo Running "$STDLIB_SOURCE" failed.
+    head -20 "$STDLIB_SOURCE"
     echo Download output was:
     cat $TMP_CURL_OUTPUT
     exit 1
@@ -114,4 +121,12 @@ python_sqlite3_check() {
 
   ( python2_check "$VERSION" && version_gte "$VERSION" "$MIN_PYTHON_2" ) \
     || ( python3_check "$VERSION" && version_gte "$VERSION" "$MIN_PYTHON_3" )
+}
+
+is_module_available() {
+  # Returns 0 is the specified module exists, otherwise returns 1.
+  # Uses pkgutil rather than pkg_resources or pip's CLI, since pkgutil exists
+  # in the stdlib, and doesn't depend on the choice of package manager.
+  local module_name="${1}"
+  python -c "import sys, pkgutil; sys.exit(0 if pkgutil.find_loader('${module_name}') else 1)"
 }
