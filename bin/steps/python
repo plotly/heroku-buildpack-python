@@ -199,12 +199,18 @@ puts-step "Installing pip ${PIP_VERSION}, setuptools ${SETUPTOOLS_VERSION} and w
 # This will allow users to override where pip gets installed from
 # which is useful if CI for heroku applications is run in non-heroku environments
 # where access to pypi is strictly controlled
-if [[ -n "$GET_PIP_PYPI_INDEX_URL" ]]; then
-  /app/.heroku/python/bin/python "${PIP_WHEEL}/pip" install --no-index "$GET_PIP_PYPI_INDEX_URL/pip/pip-20.2.4-py2.py3-none-any.whl" "$GET_PIP_PYPI_INDEX_URL/setuptools/setuptools-39.0.1-py2.py3-none-any.whl" "$GET_PIP_PYPI_INDEX_URL/wheel/wheel-0.31.1-py2.py3-none-any.whl" &> /dev/null
-  /app/.heroku/python/bin/pip install --no-index "$GET_PIP_PYPI_INDEX_URL/setuptools/setuptools-39.0.1-py2.py3-none-any.whl" &> /dev/null
+
+# Setuptools 47.1.1 is py3 only
+if [[ "${PYTHON_VERSION}" == ${PY27}* ]]; then
+  SETUPTOOLS_VERSION="$SETUPTOOLS_VERSION-py2.py3"
 else
-  /app/.heroku/python/bin/python  "${PIP_WHEEL}/pip" install  pip=="$PIP_UPDATE" &> /dev/null
-  /app/.heroku/python/bin/pip install "$ROOT_DIR/vendor/setuptools-39.0.1-py2.py3-none-any.whl" &> /dev/null
+  SETUPTOOLS_VERSION="$SETUPTOOLS_VERSION-py3"
+fi
+
+if [[ -n "$GET_PIP_PYPI_INDEX_URL" ]]; then
+  /app/.heroku/python/bin/python "${PIP_WHEEL}/pip" install --quiet --no-index "$GET_PIP_PYPI_INDEX_URL/pip/pip-${PIP_VERSION}-py2.py3-none-any.whl" "$GET_PIP_PYPI_INDEX_URL/setuptools/setuptools-${SETUPTOOLS_VERSION}-none-any.whl" "$GET_PIP_PYPI_INDEX_URL/wheel/wheel-${WHEEL_VERSION}-py2.py3-none-any.whl"
+else
+  /app/.heroku/python/bin/python "${PIP_WHEEL}/pip" install --quiet --disable-pip-version-check --no-cache "${PIP_TO_INSTALL}" "setuptools==${SETUPTOOLS_VERSION}" "wheel==${WHEEL_VERSION}"				   
 fi
 
 hash -r
