@@ -92,3 +92,7 @@ Steps for rebase:
     git push origin rebase-on-upstream
 
 Once the rebase is complete, simply run through the release process as detailed above.
+
+### Dependency sync between the buildpack and [`dds-vendor`](https://github.com/plotly/dds-vendor)
+
+Our fork of the buildpack relies on [`dds-vendor`](https://github.com/plotly/dds-vendor) for installing python's basic dependencies such as `pip`, `wheel` and `setuptools` so, the person syncing the buildpack should ensure that new versions of those dependencies also get updated on the `dds-vendor`'s [Dockerfile](https://github.com/plotly/dds-vendor/blob/master/Dockerfile).
