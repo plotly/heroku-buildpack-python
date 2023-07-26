@@ -13,7 +13,7 @@ SUPPORT_LINK="https://dash.plot.ly/dash-deployment-server/troubleshooting"
 
 ONLY_SUPPORTED_2_VERSION="Only the latest version of Python 2 is supported on the platform. Please consider upgrading to"
 
-PYTHON_2_EOL_UPDATE="Python 2 has reached it's community EOL. Upgrade your Python runtime to maintain a secure application as soon as possible."
+PYTHON_2_EOL_UPDATE="Python 2 has reached its community EOL. Upgrade your Python runtime to maintain a secure application as soon as possible."
 
 TMP_CURL_OUTPUT=$(mktemp)
 
