@@ -51,17 +51,17 @@ PY311="python-3.11"
 PY310="python-3.10"
 PY39="python-3.9"
 PY38="python-3.8"
-PY37="python-3.7"
-PY36="python-3.6"
-PY35="python-3.5"
-PY34="python-3.4"
-PY27="python-2.7"
 PYPY27="pypy2.7"
 PYPY36="pypy3.6"
+PY37="python-3.7"	
+PY36="python-3.6"	
+PY35="python-3.5"	
+PY34="python-3.4"	
+PY27="python-2.7"
 
 # Which stack is used (for binary downloading), if none is provided (e.g. outside of Heroku)?
 # TODO: Remove this and require that STACK be set explicitly.
-DEFAULT_PYTHON_STACK="heroku-18"
+DEFAULT_PYTHON_STACK="heroku-20"
 
 # Common Problem Warnings:
 # This section creates a temporary file in which to stick the output of `pip install`.
