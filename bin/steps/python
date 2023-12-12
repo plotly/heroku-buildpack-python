@@ -145,7 +145,12 @@ fi
 #  - we would still have to manage several versions of get-pip.py, to support older Pythons.
 # Instead, we use the pip wheel to install itself, using the method described here:
 # https://github.com/pypa/pip/issues/2351#issuecomment-69994524
-PIP_WHEEL_FILENAME="pip-${PIP_VERSION}-py2.py3-none-any.whl"
+if [[ "${PIP_VERSION}" == "20.2.4"  ]]; then
+  PIP_WHEEL_FILENAME="pip-${PIP_VERSION}-py2.py3-none-any.whl"
+else
+  PIP_WHEEL_FILENAME="pip-${PIP_VERSION}-py3-none-any.whl"
+fi
+
 PIP_WHEEL_URL="${S3_BASE_URL}/simple/pip/${PIP_WHEEL_FILENAME}"
 PIP_WHEEL="${TMPDIR:-/tmp}/${PIP_WHEEL_FILENAME}"
 
