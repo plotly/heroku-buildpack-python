@@ -126,6 +126,10 @@ if [[ "${PYTHON_VERSION}" == ${PY34}* ]]; then
 elif [[ "${PYTHON_VERSION}" == ${PY27}* || "${PYTHON_VERSION}" == ${PYPY27}* ]]; then
   # Python 2.7 support was dropped in setuptools 45+.
   SETUPTOOLS_VERSION='44.1.1'
+
+elif [[ "${PYTHON_VERSION}" == ${PY312}* || "${PYTHON_VERSION}" == ${PY311}* || "${PYTHON_VERSION}" == ${PY310}* ]]; then
+  # Python 3.12 dropped support for older pip
+  PIP_VERSION='23.3.1'
 fi
 
 # We don't use get-pip.py, since:
