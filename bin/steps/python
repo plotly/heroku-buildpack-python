@@ -132,6 +132,12 @@ elif [[ "${PYTHON_VERSION}" == ${PY312}* || "${PYTHON_VERSION}" == ${PY311}* || 
   PIP_VERSION='23.3.1'
 fi
 
+if [ -f "pip-version.txt" ]
+then
+    PIP_VERSION=$(cat pip-version.txt)
+    puts-warn "Using Pip Version from pip-version.txt: $PIP_VERSION"
+fi
+
 # We don't use get-pip.py, since:
 #  - it uses `--force-reinstall`, which is unnecessary here and slows down repeat builds
 #  - it means downloading pip twice (once embedded in get-pip.py, and again during
