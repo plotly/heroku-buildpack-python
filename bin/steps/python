@@ -112,7 +112,7 @@ fi
 rm -f "$TMP_CURL_OUTPUT"
 set -e
 
-PIP_VERSION='20.2.4'
+PIP_VERSION='23.3.1'
 # Must use setuptools <47.2.0 until we fix:
 # https://github.com/heroku/heroku-buildpack-python/issues/1006
 SETUPTOOLS_VERSION='47.1.1'
@@ -126,11 +126,6 @@ if [[ "${PYTHON_VERSION}" == ${PY34}* ]]; then
 elif [[ "${PYTHON_VERSION}" == ${PY27}* || "${PYTHON_VERSION}" == ${PYPY27}* ]]; then
   # Python 2.7 support was dropped in setuptools 45+.
   SETUPTOOLS_VERSION='44.1.1'
-
-elif [[ "${PYTHON_VERSION}" == ${PY312}* || "${PYTHON_VERSION}" == ${PY311}* || "${PYTHON_VERSION}" == ${PY310}* ]]; then
-  # Python 3.12 dropped support for older pip
-  PIP_VERSION='23.3.1'
-fi
 
 if [ -f "pip-version.txt" ]
 then
@@ -184,7 +179,7 @@ else
 fi
 
 if [[ -n "$GET_PIP_PYPI_INDEX_URL" ]]; then
-  /app/.heroku/python/bin/python "${PIP_WHEEL}/pip" install --quiet --no-index "$GET_PIP_PYPI_INDEX_URL/pip/pip-${PIP_VERSION}-py2.py3-none-any.whl" "$GET_PIP_PYPI_INDEX_URL/setuptools/setuptools-${SETUPTOOLS_VERSION}-none-any.whl" "$GET_PIP_PYPI_INDEX_URL/wheel/wheel-${WHEEL_VERSION}-py2.py3-none-any.whl"
+  /app/.heroku/python/bin/python "${PIP_WHEEL}/pip" install --quiet --no-index "$PIP_WHEEL_URL" "$GET_PIP_PYPI_INDEX_URL/setuptools/setuptools-${SETUPTOOLS_VERSION}-none-any.whl" "$GET_PIP_PYPI_INDEX_URL/wheel/wheel-${WHEEL_VERSION}-py2.py3-none-any.whl"
 else
   /app/.heroku/python/bin/python "${PIP_WHEEL}/pip" install --quiet --disable-pip-version-check --no-cache "${PIP_TO_INSTALL}" "setuptools==${SETUPTOOLS_VERSION}" "wheel==${WHEEL_VERSION}"				   
 fi
