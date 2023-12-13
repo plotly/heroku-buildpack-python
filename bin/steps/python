@@ -112,10 +112,8 @@ fi
 rm -f "$TMP_CURL_OUTPUT"
 set -e
 
-PIP_VERSION='20.2.4'
-# Must use setuptools <47.2.0 until we fix:
-# https://github.com/heroku/heroku-buildpack-python/issues/1006
-SETUPTOOLS_VERSION='47.1.1'
+PIP_VERSION='23.3.1'
+SETUPTOOLS_VERSION='69.0.2'
 WHEEL_VERSION='0.34.2'
 
 if [[ "${PYTHON_VERSION}" == ${PY34}* ]]; then
@@ -126,6 +124,11 @@ if [[ "${PYTHON_VERSION}" == ${PY34}* ]]; then
 elif [[ "${PYTHON_VERSION}" == ${PY27}* || "${PYTHON_VERSION}" == ${PYPY27}* ]]; then
   # Python 2.7 support was dropped in setuptools 45+.
   SETUPTOOLS_VERSION='44.1.1'
+
+if [ -f "pip-version.txt" ]
+then
+    PIP_VERSION=$(cat pip-version.txt)
+    puts-warn "Using Pip Version from pip-version.txt: $PIP_VERSION"
 fi
 
 # We don't use get-pip.py, since:
@@ -135,7 +138,12 @@ fi
 #  - we would still have to manage several versions of get-pip.py, to support older Pythons.
 # Instead, we use the pip wheel to install itself, using the method described here:
 # https://github.com/pypa/pip/issues/2351#issuecomment-69994524
-PIP_WHEEL_FILENAME="pip-${PIP_VERSION}-py2.py3-none-any.whl"
+if [[ "${PIP_VERSION}" == "20.2.4"  ]]; then
+  PIP_WHEEL_FILENAME="pip-${PIP_VERSION}-py2.py3-none-any.whl"
+else
+  PIP_WHEEL_FILENAME="pip-${PIP_VERSION}-py3-none-any.whl"
+fi
+
 PIP_WHEEL_URL="${S3_BASE_URL}/simple/pip/${PIP_WHEEL_FILENAME}"
 PIP_WHEEL="${TMPDIR:-/tmp}/${PIP_WHEEL_FILENAME}"
 
@@ -169,7 +177,7 @@ else
 fi
 
 if [[ -n "$GET_PIP_PYPI_INDEX_URL" ]]; then
-  /app/.heroku/python/bin/python "${PIP_WHEEL}/pip" install --quiet --no-index "$GET_PIP_PYPI_INDEX_URL/pip/pip-${PIP_VERSION}-py2.py3-none-any.whl" "$GET_PIP_PYPI_INDEX_URL/setuptools/setuptools-${SETUPTOOLS_VERSION}-none-any.whl" "$GET_PIP_PYPI_INDEX_URL/wheel/wheel-${WHEEL_VERSION}-py2.py3-none-any.whl"
+  /app/.heroku/python/bin/python "${PIP_WHEEL}/pip" install --quiet --no-index "$PIP_WHEEL_URL" "$GET_PIP_PYPI_INDEX_URL/setuptools/setuptools-${SETUPTOOLS_VERSION}-none-any.whl" "$GET_PIP_PYPI_INDEX_URL/wheel/wheel-${WHEEL_VERSION}-py2.py3-none-any.whl"
 else
   /app/.heroku/python/bin/python "${PIP_WHEEL}/pip" install --quiet --disable-pip-version-check --no-cache "${PIP_TO_INSTALL}" "setuptools==${SETUPTOOLS_VERSION}" "wheel==${WHEEL_VERSION}"				   
 fi

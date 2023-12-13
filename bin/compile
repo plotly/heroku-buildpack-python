@@ -47,6 +47,7 @@ S3_BASE_URL="${BUILDPACK_S3_BASE_URL:-"https://heroku-buildpack-python.s3.amazon
 source "$BIN_DIR/default_pythons"
 
 # Supported Python Branches
+PY312="python-3.12"
 PY311="python-3.11"
 PY310="python-3.10"
 PY39="python-3.9"
