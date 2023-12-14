@@ -124,8 +124,9 @@ if [[ "${PYTHON_VERSION}" == ${PY34}* ]]; then
 elif [[ "${PYTHON_VERSION}" == ${PY27}* || "${PYTHON_VERSION}" == ${PYPY27}* ]]; then
   # Python 2.7 support was dropped in setuptools 45+.
   SETUPTOOLS_VERSION='44.1.1'
+fi
 
-if [ -f "pip-version.txt" ]
+if [ -f "pip-version.txt" ];
 then
     PIP_VERSION=$(cat pip-version.txt)
     puts-warn "Using Pip Version from pip-version.txt: $PIP_VERSION"
