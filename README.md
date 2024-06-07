@@ -1,5 +1,12 @@
 ![python](https://cloud.githubusercontent.com/assets/51578/13712821/b68a42ce-e793-11e5-96b0-d8eb978137ba.png)
 
+<div align="center">
+  <a href="https://dash.plotly.com/project-maintenance">
+    <img src="https://dash.plotly.com/assets/images/maintained-by-plotly.png" width="400px" alt="Maintained by Plotly">
+  </a>
+</div>
+
+
 # Heroku Buildpack: Python
 
 This is a fork of https://github.com/heroku/heroku-buildpack-python/ maintained
